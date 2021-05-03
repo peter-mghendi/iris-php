@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\VideoController;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,10 +16,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::view('/', 'welcome');
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::view('/dashboard', 'dashboard')->name('dashboard');
+
+    Route::get('/chat', fn() => view('chat', ['users' => User::where('id', '<>', Auth::id())->get()]))
+        ->name('chat');
+        
+    Route::post('/token', [VideoController::class, 'token'])->name('token');
+    Route::post('/call', [VideoController::class, 'call'])->name('call');
+});
