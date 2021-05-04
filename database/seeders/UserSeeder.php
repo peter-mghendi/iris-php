@@ -16,14 +16,21 @@ class UserSeeder extends Seeder
     public function run()
     {
         $now = now();
-        
-        DB::table('users')->insert([
+
+        DB::table('users')->insert([[
             'name'              => 'user',
             'email'             => 'user@mail.com',
             'email_verified_at' => now(),
             'password'          => Hash::make('password'),
             'created_at'        => $now,
             'updated_at'        => $now,
-        ]);
+        ], [
+            'name'              => 'user2',
+            'email'             => 'user2@mail.com',
+            'email_verified_at' => now(),
+            'password'          => Hash::make('password'),
+            'created_at'        => $now,
+            'updated_at'        => $now,
+        ]]);
     }
 }
